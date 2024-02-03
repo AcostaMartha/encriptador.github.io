@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Encriptador / Desencriptador</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<img id="logo" src="Logo.png">
+
+<div class="main-container">
+  <div class="text-container">
+
+    <textarea id="texto" rows="4" cols="50" placeholder="Ingrese aqui el texto." onfocus="clearPlaceholder(this)"></textarea>
+    <div id="imgdtxtt">
+      <P id="txtt"><img src="iconoi.png">Solo letras minúsculas y sin acentos</P>
+    
+   </div>
+    <div class="buttons-container">
+
+      <button id="encriptar" onclick="procesar('encriptar')">encriptar</button>
+      <button id="desencriptar" onclick="procesar('desencriptar')">desencriptar</button>
+    </div>
+  </div>
+
+  <div class="result-container">
+    <div id="cont-result">
+      <p id="resultado"></p>
+    </div>
+      
+    <div id="cont-textos">
+      <p id="Ptexto2">Ningún mensaje fue encontrado</p>
+      <p id="Ptexto1">Ingresa el texto que desees encriptar o desencriptar.</p>
+    </div>
+ 
+      <button id="copiarBoton" onclick="copiarTexto()" style="display:none;">Copiar al Portapapeles</button>
+  </div>
+
+  <div class="options-container">
+   
+  </div>
+</div>
+
+<footer>
+  <p>© 2024 Martha Acosta. Proyecto Alura.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
