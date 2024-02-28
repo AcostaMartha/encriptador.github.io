@@ -2,7 +2,6 @@ function encriptar() {
     var textoOriginal = document.getElementById("texto").value;
     var resultado = encriptarTexto(textoOriginal);
     document.getElementById("resultado").textContent = resultado;
-
     
   }
 
@@ -12,89 +11,56 @@ function encriptar() {
     document.getElementById("resultado").textContent = resultado;
   }
   
-  function encriptarTexto(texto) {
-    return texto
-      .split('') // Dividir el texto en un array de caracteres
-      .map(function(caracter) {
-        // Mapear cada letra a su equivalente encriptado
-        var letrasEncriptadas = {
-          'a': 'alfa',
-          'b': 'bravo',
-          'c': 'charlie',
-          'd': 'delta',
-          'e': 'echo',
-          'f': 'foxtrot',
-          'g': 'golf',
-          'h': 'hotel',
-          'i': 'india',
-          'j': 'juliett',
-          'k': 'kilo',
-          'l': 'lima',
-          'm': 'mike',
-          'n': 'november',
-          'o': 'oscar',
-          'p': 'papa',
-          'q': 'quebec',
-          'r': 'romeo',
-          's': 'sierra',
-          't': 'tango',
-          'u': 'uniform',
-          'v': 'victor',
-          'w': 'whiskey',
-          'x': 'x-ray',
-          'y': 'yankee',
-          'z': 'zulu'
-        };
-  
-        // Si el caracter está en el objeto letrasEncriptadas, devolver su equivalente encriptado, de lo contrario, devolver el caracter original
-        return letrasEncriptadas.hasOwnProperty(caracter.toLowerCase()) ? letrasEncriptadas[caracter.toLowerCase()] + ' ' : caracter + ' ';
-      })
-      .join(''); // Unir el array de caracteres de nuevo en una cadena
-  }
-  
-  
-  function desencriptarTexto(texto) {
-    // Mapeo inverso de palabras encriptadas a letras originales
-    var letrasDesencriptadas = {
-        'alfa': 'a',
-        'bravo': 'b',
-        'charlie': 'c',
-        'delta': 'd',
-        'echo': 'e',
-        'foxtrot': 'f',
-        'golf': 'g',
-        'hotel': 'h',
-        'india': 'i',
-        'juliett': 'j',
-        'kilo': 'k',
-        'lima': 'l',
-        'mike': 'm',
-        'november': 'n',
-        'oscar': 'o',
-        'papa': 'p',
-        'quebec': 'q',
-        'romeo': 'r',
-        'sierra': 's',
-        'tango': 't',
-        'uniform': 'u',
-        'victor': 'v',
-        'whiskey': 'w',
-        'x-ray': 'x',
-        'yankee': 'y',
-        'zulu': 'z'
-    };
-
-    // Dividir el texto en palabras
-    var palabrasEncriptadas = texto.match(/\S+/g) || [];
-
-    // Desencriptar cada palabra y unirlas con espacio
-    var resultado = palabrasEncriptadas.map(function (palabra) {
-        // Si la palabra encriptada está en el objeto letrasDesencriptadas, devolver su equivalente desencriptado, de lo contrario, devolver la palabra original
-        return letrasDesencriptadas.hasOwnProperty(palabra.toLowerCase()) ? letrasDesencriptadas[palabra.toLowerCase()] : palabra;
-    }).join(' ');
-
-    return resultado;
+  function quitarAcentos(palabra) {
+    return palabra.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
+
+function encriptarTexto(texto) {
+    return texto
+      .split(' ')
+      .map(function(palabra) {
+        var palabraSinAcentos = quitarAcentos(palabra);
+        return palabraSinAcentos
+          .split('')
+          .map(function(caracter) {
+            var letrasEncriptadas = {
+              'a': 'ai',
+              'e': 'enter',
+              'i': 'imes',
+              'o': 'ober',
+              'u': 'ufat',
+            };
+            return letrasEncriptadas.hasOwnProperty(caracter.toLowerCase()) ? letrasEncriptadas[caracter.toLowerCase()] + '' : caracter + '';
+          })
+          .join('');
+      })
+      .join(' ');
+}
+
+// Resto del código...
+
+
+function desencriptarTexto(textoEncriptado) {
+  var letrasDesencriptadas = {
+      'ai': 'a',
+      'enter': 'e',
+      'imes': 'i',
+      'ober': 'o',
+      'ufat': 'u',
+  };
+
+  var palabrasEncriptadas = textoEncriptado.split(' ');
+
+  var palabrasDesencriptadas = palabrasEncriptadas.map(function(palabraEncriptada) {
+      var palabraDesencriptada = Object.keys(letrasDesencriptadas).find(function(encriptada) {
+          return letrasDesencriptadas[encriptada] === palabraEncriptada;
+      });
+      return palabraDesencriptada ? palabraDesencriptada : palabraEncriptada;
+  });
+
+  return palabrasDesencriptadas.join(' ');
+}
+
 
 
   function copiarTexto() {
@@ -111,37 +77,60 @@ function encriptar() {
     alert("Texto copiado al portapapeles: " + texto);
   }
   function procesar(opcion) {
-    var textoOriginal = document.getElementById("texto").value.toLowerCase();
+    var textoOriginal = document.getElementById("texto").value;
     var resultado = "";
 
     if (opcion === "encriptar") {
-      resultado = encriptarTexto(textoOriginal);
+        if (contieneMayusculas(textoOriginal)) {
+            alert("Advertencia: El texto contiene letras en mayúsculas. Solo se encriptarán las letras minúsculas.");
+        }
+        resultado = encriptarTexto(textoOriginal);
     } else if (opcion === "desencriptar") {
-      resultado = desencriptarTexto(textoOriginal);
+        resultado = desencriptarTexto(textoOriginal);
     }
 
+    var textoInput = document.getElementById("texto");
     var resultadoElement = document.getElementById("resultado");
     var copiarBoton = document.getElementById("copiarBoton");
     var mensaje1 = document.getElementById("Ptexto1");
     var mensaje2 = document.getElementById("Ptexto2");
     var resultContainer = document.querySelector(".result-container");
 
-    if (resultado.length > 0) {
-      copiarBoton.style.display = "block";
-      mensaje1.style.display = "none";
-      mensaje2.style.display = "none";
+    var textoOriginal = textoInput.value;
+    var resultado = "";
 
-      // Ocultar background-image en el contenedor de resultados
-      resultContainer.style.backgroundImage = "none";
+    if (contieneMayusculasOAccentos(textoOriginal)) {
+        alert("Advertencia: El texto contiene letras en mayúsculas o con acentos. Por favor, corrige antes de encriptar.");
     } else {
-      copiarBoton.style.display = "none";
-      mensaje1.style.display = "block";
-      mensaje2.style.display = "block";
+        if (opcion === "encriptar") {
+            resultado = encriptarTexto(textoOriginal);
+        } else if (opcion === "desencriptar") {
+            resultado = desencriptarTexto(textoOriginal);
+        }
+    }
 
-      // Restaurar el fondo en el contenedor de resultados
-      resultContainer.style.backgroundImage = "url('Muñeco.png')";
+    
+    if (resultado.length > 0) {
+        copiarBoton.style.display = "block";
+        mensaje1.style.display = "none";
+        mensaje2.style.display = "none";
+
+        resultContainer.style.backgroundImage = "none";
+    } else {
+        copiarBoton.style.display = "none";
+        mensaje1.style.display = "block";
+        mensaje2.style.display = "block";
+
+        resultContainer.style.backgroundImage = "url('Muñeco.png')";
     }
 
     resultadoElement.textContent = resultado;
-  }
-  
+}
+
+function contieneMayusculas(texto) {
+    return /[A-Z]/.test(texto);
+}
+
+function contieneMayusculasOAccentos(texto) {
+  return /[áéíóúÁÉÍÓÚA-Z]/.test(texto);
+}
