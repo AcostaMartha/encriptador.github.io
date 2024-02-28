@@ -14,84 +14,36 @@ function encriptar() {
   
   function encriptarTexto(texto) {
     return texto
-      .split('') // Dividir el texto en un array de caracteres
+      .split('') 
       .map(function(caracter) {
-        // Mapear cada letra a su equivalente encriptado
+
         var letrasEncriptadas = {
-          'a': 'alfa',
-          'b': 'bravo',
-          'c': 'charlie',
-          'd': 'delta',
-          'e': 'echo',
-          'f': 'foxtrot',
-          'g': 'golf',
-          'h': 'hotel',
-          'i': 'india',
-          'j': 'juliett',
-          'k': 'kilo',
-          'l': 'lima',
-          'm': 'mike',
-          'n': 'november',
-          'o': 'oscar',
-          'p': 'papa',
-          'q': 'quebec',
-          'r': 'romeo',
-          's': 'sierra',
-          't': 'tango',
-          'u': 'uniform',
-          'v': 'victor',
-          'w': 'whiskey',
-          'x': 'x-ray',
-          'y': 'yankee',
-          'z': 'zulu'
+          'a': 'ai',
+          'e': 'enter',
+          'i': 'imes',
+          'o': 'ober',
+          'u': 'ufat',
         };
-  
-        // Si el caracter está en el objeto letrasEncriptadas, devolver su equivalente encriptado, de lo contrario, devolver el caracter original
-        return letrasEncriptadas.hasOwnProperty(caracter.toLowerCase()) ? letrasEncriptadas[caracter.toLowerCase()] + ' ' : caracter + ' ';
+          return letrasEncriptadas.hasOwnProperty(caracter.toLowerCase()) ? letrasEncriptadas[caracter.toLowerCase()] + '' : caracter + '';
       })
-      .join(''); // Unir el array de caracteres de nuevo en una cadena
+      .join(''); 
   }
   
   
   function desencriptarTexto(texto) {
-    // Mapeo inverso de palabras encriptadas a letras originales
     var letrasDesencriptadas = {
-        'alfa': 'a',
-        'bravo': 'b',
-        'charlie': 'c',
-        'delta': 'd',
-        'echo': 'e',
-        'foxtrot': 'f',
-        'golf': 'g',
-        'hotel': 'h',
-        'india': 'i',
-        'juliett': 'j',
-        'kilo': 'k',
-        'lima': 'l',
-        'mike': 'm',
-        'november': 'n',
-        'oscar': 'o',
-        'papa': 'p',
-        'quebec': 'q',
-        'romeo': 'r',
-        'sierra': 's',
-        'tango': 't',
-        'uniform': 'u',
-        'victor': 'v',
-        'whiskey': 'w',
-        'x-ray': 'x',
-        'yankee': 'y',
-        'zulu': 'z'
+        'ai': 'a',
+        'enter': 'e',
+        'imes': 'i',
+        'ober': 'o',
+        'ufat': 'u',
     };
 
-    // Dividir el texto en palabras
     var palabrasEncriptadas = texto.match(/\S+/g) || [];
 
-    // Desencriptar cada palabra y unirlas con espacio
     var resultado = palabrasEncriptadas.map(function (palabra) {
-        // Si la palabra encriptada está en el objeto letrasDesencriptadas, devolver su equivalente desencriptado, de lo contrario, devolver la palabra original
         return letrasDesencriptadas.hasOwnProperty(palabra.toLowerCase()) ? letrasDesencriptadas[palabra.toLowerCase()] : palabra;
-    }).join(' ');
+    }).join('');
 
     return resultado;
 }
@@ -131,14 +83,12 @@ function encriptar() {
       mensaje1.style.display = "none";
       mensaje2.style.display = "none";
 
-      // Ocultar background-image en el contenedor de resultados
       resultContainer.style.backgroundImage = "none";
     } else {
       copiarBoton.style.display = "none";
       mensaje1.style.display = "block";
       mensaje2.style.display = "block";
 
-      // Restaurar el fondo en el contenedor de resultados
       resultContainer.style.backgroundImage = "url('Muñeco.png')";
     }
 
