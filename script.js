@@ -11,11 +11,16 @@ function encriptar() {
     document.getElementById("resultado").textContent = resultado;
   }
   
-  function encriptarTexto(texto) {
+  function quitarAcentos(palabra) {
+    return palabra.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+function encriptarTexto(texto) {
     return texto
-      .split('')
+      .split(' ')
       .map(function(palabra) {
-        return palabra
+        var palabraSinAcentos = quitarAcentos(palabra);
+        return palabraSinAcentos
           .split('')
           .map(function(caracter) {
             var letrasEncriptadas = {
@@ -25,13 +30,15 @@ function encriptar() {
               'o': 'ober',
               'u': 'ufat',
             };
-            var caracterEncriptado = letrasEncriptadas.hasOwnProperty(caracter.toLowerCase()) ? letrasEncriptadas[caracter.toLowerCase()] + '' : caracter + '';
-            return (caracter === caracter.toLowerCase()) ? caracterEncriptado : caracter;
+            return letrasEncriptadas.hasOwnProperty(caracter.toLowerCase()) ? letrasEncriptadas[caracter.toLowerCase()] + '' : caracter + '';
           })
           .join('');
       })
       .join(' ');
 }
+
+// Resto del código...
+
 
 function desencriptarTexto(textoEncriptado) {
   var letrasDesencriptadas = {
@@ -82,12 +89,27 @@ function desencriptarTexto(textoEncriptado) {
         resultado = desencriptarTexto(textoOriginal);
     }
 
+    var textoInput = document.getElementById("texto");
     var resultadoElement = document.getElementById("resultado");
     var copiarBoton = document.getElementById("copiarBoton");
     var mensaje1 = document.getElementById("Ptexto1");
     var mensaje2 = document.getElementById("Ptexto2");
     var resultContainer = document.querySelector(".result-container");
 
+    var textoOriginal = textoInput.value;
+    var resultado = "";
+
+    if (contieneMayusculasOAccentos(textoOriginal)) {
+        alert("Advertencia: El texto contiene letras en mayúsculas o con acentos. Por favor, corrige antes de encriptar.");
+    } else {
+        if (opcion === "encriptar") {
+            resultado = encriptarTexto(textoOriginal);
+        } else if (opcion === "desencriptar") {
+            resultado = desencriptarTexto(textoOriginal);
+        }
+    }
+
+    
     if (resultado.length > 0) {
         copiarBoton.style.display = "block";
         mensaje1.style.display = "none";
@@ -107,4 +129,8 @@ function desencriptarTexto(textoEncriptado) {
 
 function contieneMayusculas(texto) {
     return /[A-Z]/.test(texto);
+}
+
+function contieneMayusculasOAccentos(texto) {
+  return /[áéíóúÁÉÍÓÚA-Z]/.test(texto);
 }
